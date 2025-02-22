@@ -1,8 +1,8 @@
-// app/register/page.tsx
 "use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const RegisterPage: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -65,6 +65,12 @@ const RegisterPage: React.FC = () => {
           Register
         </button>
       </form>
+      <p className="mt-4 text-center">
+        Already have an account?{" "}
+        <Link href="/login" className="text-blue-500 hover:underline">
+          Go to login page
+        </Link>
+      </p>
     </div>
   );
 };

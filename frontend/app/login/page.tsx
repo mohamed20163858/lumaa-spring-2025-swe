@@ -1,8 +1,8 @@
-// app/login/page.tsx
 "use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useAuth } from "../../context/AuthContext";
 
 const LoginPage: React.FC = () => {
@@ -68,6 +68,12 @@ const LoginPage: React.FC = () => {
           Login
         </button>
       </form>
+      <p className="mt-4 text-center">
+        New to the app?{" "}
+        <Link href="/register" className="text-blue-500 hover:underline">
+          Go to register page
+        </Link>
+      </p>
     </div>
   );
 };
