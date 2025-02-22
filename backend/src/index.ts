@@ -3,11 +3,14 @@ import express, { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import cors from "cors";
 import { PrismaClient } from "@prisma/client";
 
 dotenv.config();
 
 const app: express.Application = express();
+app.use(cors({ origin: "*" }));
+
 app.use(express.json());
 
 const prisma = new PrismaClient();
@@ -98,6 +101,27 @@ app.post("/auth/login", async (req: Request, res: Response): Promise<any> => {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
   }
+});
+
+// Token verification endpoint: GET /auth/verify
+app.get("/auth/verify", (req: AuthenticatedRequest, res: Response) => {
+  // Extract token from the Authorization header (expected format: "Bearer <token>")
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+
+  if (!token) {
+    res.status(401).json({ error: "No token provided" });
+    return;
+  }
+
+  jwt.verify(token, JWT_SECRET, (err, decoded) => {
+    if (err) {
+      // Token is invalid or expired
+      return res.status(403).json({ error: "Invalid token" });
+    }
+    // Token is valid; optionally return the decoded user information
+    return res.status(200).json({ message: "Token is valid", user: decoded });
+  });
 });
 
 // ----- Task CRUD Endpoints (Protected) -----

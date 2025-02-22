@@ -11,6 +11,7 @@ import React, {
 
 interface AuthContextType {
   token: string | null;
+  initialized: boolean;
   login: (token: string) => void;
   logout: () => void;
 }
@@ -19,11 +20,13 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | null>(null);
+  const [initialized, setInitialized] = useState(false);
 
   // On mount, check if there's a token in localStorage
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     setToken(storedToken);
+    setInitialized(true);
   }, []);
 
   const login = (newToken: string) => {
@@ -37,7 +40,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ token, login, logout }}>
+    <AuthContext.Provider value={{ token, initialized, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
