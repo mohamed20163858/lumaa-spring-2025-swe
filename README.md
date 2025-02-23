@@ -128,6 +128,3 @@ The frontend application will start on http://localhost:3000
 
 Mohamed Saleh
 
-## License
-
-[YOUR CHOSEN LICENSE]
