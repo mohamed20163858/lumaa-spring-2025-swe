@@ -1,119 +1,133 @@
-# Full-Stack Coding Challenge
+# Task Management Application
 
-**Deadline**: Sunday, Feb 23th 11:59 pm PST
+A full-stack task management application built with Next.js, Express, Prisma, and PostgreSQL. This application allows users to register, login, and manage their tasks through a secure interface.
 
----
+## Features
 
-## Overview
+- User authentication (Register/Login)
+- Task management (Create, Read, Update, Delete)
+- Secure API endpoints with JWT authentication
+- PostgreSQL database with Prisma ORM
+- TypeScript support throughout the stack
 
-Create a “Task Management” application with **React + TypeScript** (frontend), **Node.js** (or **Nest.js**) (backend), and **PostgreSQL** (database). The application should:
+## Prerequisites
 
-1. **Register** (sign up) and **Log in** (sign in) users.
-2. After logging in, allow users to:
-   - **View a list of tasks**.
-   - **Create a new task**.
-   - **Update an existing task** (e.g., mark complete, edit).
-   - **Delete a task**.
+- Node.js (version v20.17.0)
+- PostgreSQL (version postgres (PostgreSQL) 15.0)
+- npm or yarn
 
-Focus on **correctness**, **functionality**, and **code clarity** rather than visual design.  
-This challenge is intended to be completed within ~3 hours, so keep solutions minimal yet functional.
+## Project Structure
 
----
+```
+task-management/
+├── frontend/          # Next.js frontend application
+├── backend/           # Express backend server
+└── README.md         # This file
+```
 
-## Requirements
+## Database Setup
 
-### 1. Authentication
+1. Install PostgreSQL on your machine if you haven't already from [here](https://www.postgresql.org/download/) just choose your operating system and follow the instructions to set it up. Usually it will suggest that you use a username of postgres and leave the setup of the password to you.
+2. Create a new database:
+   ```sql
+   CREATE DATABASE task_management;
+   ```
+3. The Prisma migrations will handle the table creation automatically during setup
 
-- **User Model**:
-  - `id`: Primary key
-  - `username`: Unique string
-  - `password`: Hashed string
-- **Endpoints**:
-  - `POST /auth/register` – Create a new user
-  - `POST /auth/login` – Login user, return a token (e.g., JWT)
-- **Secure the Tasks Routes**: Only authenticated users can perform task operations.  
-  - **Password Hashing**: Use `bcrypt` or another hashing library to store passwords securely.
-  - **Token Verification**: Verify the token (JWT) on each request to protected routes.
+## Backend Setup
 
-### 2. Backend (Node.js or Nest.js)
+1. Navigate to the backend directory:
+   ```bash
+   cd backend
+   ```
 
-- **Tasks CRUD**:  
-  - `GET /tasks` – Retrieve a list of tasks (optionally filtered by user).  
-  - `POST /tasks` – Create a new task.  
-  - `PUT /tasks/:id` – Update a task (e.g., mark as complete, edit text).  
-  - `DELETE /tasks/:id` – Delete a task.
-- **Task Model**:
-  - `id`: Primary key
-  - `title`: string
-  - `description`: string (optional)
-  - `isComplete`: boolean (default `false`)
-  - _(Optional)_ `userId` to link tasks to the user who created them
-- **Database**: PostgreSQL
-  - Provide instructions/migrations to set up:
-    - `users` table (with hashed passwords)
-    - `tasks` table
-- **Setup**:
-  - `npm install` to install dependencies
-  - `npm run start` (or `npm run dev`) to run the server
-  - Document any environment variables (e.g., database connection string, JWT secret)
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-### 3. Frontend (React + TypeScript)
+3. Create a `.env` file in the backend directory with the following variables:
+   ```
+   DATABASE_URL="postgresql://[YOUR_USERNAME]:[YOUR_PASSWORD]@localhost:5432/task_management?schema=public"
+   SUPABASE_JWT_SECRET="[YOUR_JWT_SECRET]"
+   PORT=8000
+   ```
 
-- **Login / Register**:
-  - Simple forms for **Register** and **Login**.
-  - Store JWT (e.g., in `localStorage`) upon successful login.
-  - If not authenticated, the user should not see the tasks page.
-- **Tasks Page**:
-  - Fetch tasks from `GET /tasks` (including auth token in headers).
-  - Display the list of tasks.
-  - Form to create a new task (`POST /tasks`).
-  - Buttons/fields to update a task (`PUT /tasks/:id`).
-  - Button to delete a task (`DELETE /tasks/:id`).
-- **Navigation**:
-  - Show `Login`/`Register` if not authenticated.
-  - Show `Logout` if authenticated.
-- **Setup**:
-  - `npm install` then `npm start` (or `npm run dev`) to run.
-  - Document how to point the frontend at the backend (e.g., `.env` file, base URL).
+4. Run Prisma migrations:
+   ```bash
+   npx prisma migrate dev
+   ```
 
----
+5. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-## Deliverables
+The backend server will start on http://localhost:8000
 
-1. **Fork the Public Repository**: **Fork** this repo into your own GitHub account.
-2. **Implement Your Solution** in the forked repository. Make sure you're README file has:
-   - Steps to set up the database (migrations, environment variables).
-   - How to run the backend.
-   - How to run the frontend.
-   - Any relevant notes on testing.
-   - Salary Expectations per month (Mandatory)
-3. **Short Video Demo**: Provide a link (in a `.md` file in your forked repo) to a brief screen recording showing:
-   - Registering a user
-   - Logging in
-   - Creating, updating, and deleting tasks
-4. **Deadline**: Submissions are due **Sunday, Feb 23th 11:59 pm PST**.
+## Frontend Setup
 
-> **Note**: Please keep your solution minimal. The entire project is intended to be completed in around 3 hours. Focus on core features (registration, login, tasks CRUD) rather than polished UI or extra features.
+1. Navigate to the frontend directory:
+   ```bash
+   cd frontend
+   ```
 
----
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-## Evaluation Criteria
+3. Create a `.env.local` file in the frontend directory:
+   ```
+   NEXT_PUBLIC_API_URL=http://localhost:8000
+   ```
 
-1. **Functionality**  
-   - Does registration and login work correctly (with password hashing)?
-   - Are tasks protected by authentication?
-   - Does the tasks CRUD flow work end-to-end?
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-2. **Code Quality**  
-   - Is the code structured logically and typed in TypeScript?
-   - Are variable/function names descriptive?
+The frontend application will start on http://localhost:3000
 
-3. **Clarity**  
-   - Is the `README.md` (in your fork) clear and detailed about setup steps?
-   - Easy to run and test?
+## API Endpoints
 
-4. **Maintainability**  
-   - Organized logic (controllers/services, etc.)
-   - Minimal hard-coded values
+### Authentication
+- `POST /auth/register` - Register a new user
+- `POST /auth/login` - Login user
 
-Good luck, and we look forward to your submission!
+### Tasks (Protected Routes)
+- `GET /tasks` - Get all tasks
+- `POST /tasks` - Create a new task
+- `PUT /tasks/:id` - Update a task
+- `DELETE /tasks/:id` - Delete a task
+
+## Demo Video
+
+[Demo video](https://www.loom.com/share/d85e0f679ecf482a92aa0f4f8696ac83?sid=2be72c46-6310-4cb9-a8fa-79a41b2d9cba)
+
+## Salary Expectations
+
+-I expect 1600$ per month I understand this is 20 hours worked per week and I expect  I should paid 20$ per hour 
+
+## Additional Notes
+
+- The application uses JWT for authentication
+- Passwords are hashed using bcrypt
+- All task endpoints require authentication
+- The frontend uses TypeScript for better type safety and development experience
+
+## Future Improvements
+
+- Add task categories
+- Implement task due dates
+- Add task sharing between users
+- Implement unit and integration tests
+- Add CI/CD pipeline
+
+## Author
+
+Mohamed Saleh
+
+## License
+
+[YOUR CHOSEN LICENSE]
