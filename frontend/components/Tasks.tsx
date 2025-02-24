@@ -33,6 +33,28 @@ const Tasks: React.FC = () => {
   };
 
   useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/tasks`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const data = await res.json();
+        if (res.ok) {
+          setTasks(data);
+        } else {
+          setError(data.error || "Failed to fetch tasks");
+        }
+      } catch (err) {
+        console.error(err);
+        setError("An error occurred");
+      }
+    };
     if (token) fetchTasks();
   }, [token]);
 
