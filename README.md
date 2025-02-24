@@ -2,6 +2,10 @@
 
 A full-stack task management application built with Next.js, Express, Prisma, and PostgreSQL. This application allows users to register, login, and manage their tasks through a secure interface.
 
+# Demo 
+Here is a [live link](https://lumaa-spring-2025-swe-yrke.vercel.app/) to the app implemented using [vercel](https://vercel.com/) for hosting both frontend and backend together and [supabase database](https://supabase.com/database) for using online free PostgreSQL database. 
+Please note to be able to host it you need to give permission to your Prisma ORM to edit the supabase database this can be done by following these instructions in this [link](https://supabase.com/docs/guides/database/prisma) 
+
 ## Features
 
 - User authentication (Register/Login)
